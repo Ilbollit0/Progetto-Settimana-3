@@ -1,0 +1,289 @@
+/* AnimeBox - style.css
+   Colori principali: arancio #e4572e e blu #2b59c3 */
+
+/* ----- RESET MINIMO ----- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #f3f4fa;
+  color: #1c1f2e;
+  line-height: 1.5;
+}
+
+.contenitore {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ----- HEADER ----- */
+.header {
+  background: #2b59c3;
+  color: #fff;
+  padding: 32px 0;
+  margin-bottom: 24px;
+}
+
+.header-interno,
+.lista-testa,
+.form-fondo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-interno,
+.lista-testa {
+  justify-content: space-between;
+}
+
+/* ----- PANNELLI (sezioni) ----- */
+.pannello {
+  background: #fff;
+  border: 1px solid #dde0ec;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.pannello h2 {
+  font-size: 1.2rem;
+  margin-bottom: 14px;
+}
+.lista-testa h2 {
+  margin-bottom: 0;
+}
+
+.campi,
+.controlli,
+.contatori {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.campo-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  align-self: end;
+  padding-bottom: 10px;
+}
+
+/* ----- CAMPI E BOTTONI: stesso font, bordo, angoli e spazi ----- */
+input,
+select,
+.btn {
+  font: inherit;
+  border: 1px solid #dde0ec;
+  border-radius: 8px;
+  padding: 9px 12px;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid #2b59c3;
+}
+
+.form-fondo {
+  margin-top: 16px;
+}
+
+#errore {
+  color: #d64545;
+  font-weight: 600;
+}
+
+/* ----- BOTTONI E LINK ----- */
+/* Sfondo trasparente e colore ereditato: vanno bene in entrambi i temi */
+.btn {
+  cursor: pointer;
+  color: inherit;
+  background: transparent;
+  border-color: #8a90a8;
+}
+
+.btn.attivo {
+  color: #fff;
+  background: #2b59c3;
+  border-color: #2b59c3;
+}
+
+.btn-primario,
+.btn-tema {
+  color: #fff;
+  background: #e4572e;
+  border-color: #e4572e;
+  font-weight: 600;
+}
+
+.btn-piccolo {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}
+
+/* Verde: bottone "Vista", barra delle viste, notifica di successo */
+.btn-visto.attivo,
+.barra-piena.verde,
+#notifica.successo {
+  background: #2e9e5b;
+  border-color: #2e9e5b;
+}
+
+/* Hover su TUTTI i bottoni (dopo gli stati attivi, così vale anche su quelli) */
+.btn:hover {
+  color: #fff;
+  background: #e4572e;
+  border-color: #e4572e;
+}
+
+.btn-primario:hover {
+  background: #2b59c3;
+  border-color: #2b59c3;
+}
+
+.btn-tema:hover {
+  color: #2b59c3;
+  background: #fff;
+  border-color: #fff;
+}
+
+a {
+  color: #e4572e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #2b59c3;
+  text-decoration: underline;
+}
+
+/* ----- TESTO SECONDARIO (grigio) ----- */
+label,
+.contatore-etichetta,
+.dettagli,
+#conteggio,
+.vuoto,
+.tabella th,
+.footer {
+  color: #5d6278;
+  font-size: 0.9rem;
+}
+
+/* ----- SFONDO GRIGIO CHIARO (come la pagina) ----- */
+input,
+select,
+.contatore,
+.barra,
+.card,
+.riga,
+.tabella tbody tr:hover {
+  color: #1c1f2e;
+  background: #f3f4fa;
+}
+
+/* ----- STATISTICHE ----- */
+.contatori {
+  margin-bottom: 18px;
+}
+
+.contatore {
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+
+.contatore-numero {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e4572e;
+}
+
+.stat-titolo {
+  margin: 14px 0 8px;
+}
+
+.barra-riga {
+  display: grid;
+  grid-template-columns: 150px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.barra {
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.barra-piena {
+  height: 100%;
+  background: #2b59c3;
+}
+
+.barra-valore {
+  text-align: right;
+  font-weight: 600;
+}
+
+/* ----- LISTA: parti comuni alle tre viste ----- */
+#conteggio {
+  margin: 8px 0;
+  font-weight: 600;
+}
+
+.gruppo-bottoni,
+.azioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gruppo-titolo {
+  margin: 20px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #e4572e;
+}
+
+.vuoto {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.stelle {
+  color: #f2a900;
+}
+
+.input-modifica {
+  width: 100%;
+}
+
+/* ----- VISTA CARD e VISTA LISTA ----- */
+.griglia {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.vista-lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
