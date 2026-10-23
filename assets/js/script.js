@@ -169,3 +169,45 @@ const statistiche = document.getElementById("statistiche");
 const conteggio = document.getElementById("conteggio");
 const lista = document.getElementById("lista");
 const notificaBox = document.getElementById("notifica");
+
+function crea(tag, classe, testo) {
+  const elemento = document.createElement(tag);
+  if (classe) elemento.className = classe;
+  if (testo !== undefined) elemento.textContent = testo;
+  return elemento;
+}
+
+function stelle(voto) {
+  let risultato = "";
+  for (let i = 1; i <= 5; i++) {
+    if (i <= voto) {
+      risultato += "★";
+    } else {
+      risultato += "☆";
+    }
+  }
+  return risultato;
+}
+function salva() {
+  localStorage.setItem(CHIAVE_SERIE, JSON.stringify(anime));
+  localStorage.setItem(CHIAVE_TEMA, tema);
+}
+
+function notifica(testo, tipo) {
+  notificaBox.textContent = testo;
+  notificaBox.className = tipo;
+  notificaBox.style.display = "block";
+  clearTimeout(timerNotifica);
+  timerNotifica = setTimeout(() => {
+    notificaBox.style.display = "none";
+  }, 3000);
+}
+
+function creaBottone(testo, azione, id, suggerimento) {
+  const bottone = crea("button", "btn btn-piccolo", testo);
+  bottone.type = "button";
+  bottone.title = suggerimento;
+  bottone.dataset.azione = azione;
+  bottone.dataset.id = id;
+  return bottone;
+}

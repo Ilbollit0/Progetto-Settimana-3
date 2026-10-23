@@ -56,10 +56,12 @@ body {
   font-size: 1.2rem;
   margin-bottom: 14px;
 }
+
 .lista-testa h2 {
   margin-bottom: 0;
 }
 
+/* ----- GRIGLIE: form, controlli e contatori ----- */
 .campi,
 .controlli,
 .contatori {
@@ -285,4 +287,140 @@ select,
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.card,
+.riga {
+  display: flex;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #dde0ec;
+  border-radius: 12px;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.card {
+  flex-direction: column;
+}
+
+/* flex-wrap: su schermi stretti le azioni vanno a capo */
+.riga {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* All'hover prendono l'ombra E si sollevano */
+.card:hover,
+.riga:hover {
+  box-shadow: 0 8px 20px rgba(28, 31, 46, 0.15);
+  transform: translateY(-4px);
+}
+
+.card-icona {
+  font-size: 2rem;
+}
+
+.card .azioni {
+  margin-top: auto;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Serie già vista: bordo verde a sinistra */
+.card.guardata,
+.riga.guardata,
+tr.guardata td:first-child {
+  border-left: 5px solid #2e9e5b;
+}
+
+/* ----- VISTA TABELLA ----- */
+.tabella-wrapper {
+  overflow-x: auto;
+}
+
+.tabella {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabella th,
+.tabella td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #dde0ec;
+}
+
+/* ----- NOTIFICA (nascosta di default, la mostra il JavaScript) ----- */
+#notifica {
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  max-width: 90%;
+  padding: 14px 20px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+}
+
+#notifica.errore {
+  background: #d64545;
+}
+
+/* ----- FOOTER ----- */
+.footer {
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* ----- TEMA SCURO: vale solo quando il body ha la classe "dark" ----- */
+body.dark {
+  background: #11131d;
+  color: #eceef7;
+}
+
+body.dark .pannello {
+  background: #1c1f2e;
+}
+
+body.dark input,
+body.dark select,
+body.dark .contatore,
+body.dark .barra,
+body.dark .card,
+body.dark .riga,
+body.dark .tabella tbody tr:hover {
+  color: #eceef7;
+  background: #11131d;
+}
+
+body.dark .pannello,
+body.dark input,
+body.dark select,
+body.dark .card,
+body.dark .riga,
+body.dark .tabella th,
+body.dark .tabella td {
+  border-color: #2f3348;
+}
+
+/* Le regole body.dark sono più specifiche di .guardata: rimetto il bordo verde */
+body.dark .card.guardata,
+body.dark .riga.guardata,
+body.dark tr.guardata td:first-child {
+  border-left-color: #2e9e5b;
+}
+
+body.dark label,
+body.dark .contatore-etichetta,
+body.dark .dettagli,
+body.dark #conteggio,
+body.dark .vuoto,
+body.dark .tabella th,
+body.dark .footer {
+  color: #a4a9c0;
 }

@@ -1,145 +1,141 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeBox - Gli anime della nostra infanzia</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeBox - Gli anime della nostra infanzia</title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
 <body>
 
-    <!-- 1. HEADER -->
-    <header class="header" id="top">
-        <div class="contenitore header-interno">
-            <div>
-                <h1>📺 AnimeBox</h1>
-                <p class="sottotitolo">Gli anime degli anni '70, '80 e '90: segna le serie che hai visto e scopri cosa
-                    ti manca.</p>
-            </div>
-            <button type="button" id="btn-tema" class="btn btn-tema">🌙 Tema scuro</button>
+  <!-- 1. HEADER -->
+  <header class="header" id="top">
+    <div class="contenitore header-interno">
+      <div>
+        <h1>📺 AnimeBox</h1>
+        <p class="sottotitolo">Gli anime degli anni '70, '80 e '90: segna le serie che hai visto e scopri cosa ti manca.</p>
+      </div>
+      <button type="button" id="btn-tema" class="btn btn-tema">🌙 Tema scuro</button>
+    </div>
+  </header>
+
+  <main class="contenitore">
+
+    <!-- 2. FORM DI INSERIMENTO -->
+    <section class="pannello">
+      <h2>Aggiungi una serie</h2>
+      <form id="form-serie">
+        <div class="campi">
+          <label>Titolo *
+            <input type="text" id="titolo" placeholder="Es. Mazinga Z">
+          </label>
+          <label>Protagonista *
+            <input type="text" id="protagonista" placeholder="Es. Koji Kabuto">
+          </label>
+          <label>Anno *
+            <input type="number" id="anno" placeholder="Es. 1972">
+          </label>
+          <label>Categoria *
+            <select id="categoria">
+              <option value="">-- Scegli --</option>
+              <option value="Robot">Robot</option>
+              <option value="Shojo">Shojo</option>
+              <option value="Azione">Azione</option>
+              <option value="Avventura">Avventura</option>
+              <option value="Sport">Sport</option>
+              <option value="Commedia">Commedia</option>
+            </select>
+          </label>
+          <label>Voto *
+            <select id="voto">
+              <option value="">-- Voto --</option>
+              <option value="1">★ 1</option>
+              <option value="2">★★ 2</option>
+              <option value="3">★★★ 3</option>
+              <option value="4">★★★★ 4</option>
+              <option value="5">★★★★★ 5</option>
+            </select>
+          </label>
+          <label class="campo-check">
+            <input type="checkbox" id="visto"> Serie già vista
+          </label>
         </div>
-    </header>
-
-    <main class="contenitore">
-
-        <!-- 2. FORM DI INSERIMENTO -->
-        <section class="pannello">
-            <h2>Aggiungi una serie</h2>
-            <form id="form-serie" novalidate>
-                <div class="campi">
-                    <label>Titolo *
-                        <input type="text" id="titolo" placeholder="Es. Mazinga Z">
-                    </label>
-                    <label>Protagonista
-                        <input type="text" id="protagonista" placeholder="Es. Koji Kabuto">
-                    </label>
-                    <label>Anno *
-                        <input type="number" id="anno" placeholder="Es. 1972">
-                    </label>
-                    <label>Categoria *
-                        <select id="categoria">
-                            <option value="">-- Scegli --</option>
-                            <option value="Robot">Robot</option>
-                            <option value="Shojo">Shojo</option>
-                            <option value="Azione">Azione</option>
-                            <option value="Avventura">Avventura</option>
-                            <option value="Sport">Sport</option>
-                            <option value="Commedia">Commedia</option>
-                        </select>
-                    </label>
-                    <label>Voto *
-                        <select id="voto">
-                            <option value="">-- Voto --</option>
-                            <option value="1">★ 1</option>
-                            <option value="2">★★ 2</option>
-                            <option value="3">★★★ 3</option>
-                            <option value="4">★★★★ 4</option>
-                            <option value="5">★★★★★ 5</option>
-                        </select>
-                    </label>
-                    <label class="campo-check">
-                        <input type="checkbox" id="visto"> Serie già vista
-                    </label>
-                </div>
-                <div class="form-fondo">
-                    <button type="submit" class="btn btn-primario">+ Aggiungi</button>
-                    <p id="errore"></p>
-                </div>
-            </form>
-        </section>
-
-        <!-- 3. SEZIONE DI CONTROLLI -->
-        <section class="pannello">
-            <h2>Cerca e filtra</h2>
-            <div class="controlli">
-                <label>Ricerca
-                    <input type="search" id="ricerca" placeholder="Titolo o protagonista...">
-                </label>
-                <label>Stato
-                    <select id="filtro">
-                        <option value="tutti">Tutte</option>
-                        <option value="visti">Viste</option>
-                        <option value="da-vedere">Da vedere</option>
-                    </select>
-                </label>
-                <label>Categoria
-                    <select id="filtro-categoria">
-                        <option value="tutte">Tutte</option>
-                        <option value="Robot">Robot</option>
-                        <option value="Shojo">Shojo</option>
-                        <option value="Azione">Azione</option>
-                        <option value="Avventura">Avventura</option>
-                        <option value="Sport">Sport</option>
-                        <option value="Commedia">Commedia</option>
-                    </select>
-                </label>
-                <label>Ordina per
-                    <select id="ordine">
-                        <option value="manuale">Ordine personale</option>
-                        <option value="anno-asc">Anno (dal più vecchio)</option>
-                        <option value="anno-desc">Anno (dal più recente)</option>
-                        <option value="titolo">Titolo (A-Z)</option>
-                        <option value="voto">Voto (dal più alto)</option>
-                    </select>
-                </label>
-            </div>
-        </section>
-
-        <!-- STATISTICHE -->
-        <section class="pannello">
-            <h2>Statistiche</h2>
-            <div id="statistiche"></div>
-        </section>
-
-        <!-- 4. LISTA DEI DATI (la riempie render) -->
-        <section class="pannello">
-            <div class="lista-testa">
-                <h2>La mia collezione</h2>
-                <div id="viste" class="gruppo-bottoni">
-                    <button type="button" class="btn" data-vista="lista">☰ Lista</button>
-                    <button type="button" class="btn attivo" data-vista="card">▦ Card</button>
-                    <button type="button" class="btn" data-vista="tabella">▤ Tabella</button>
-                </div>
-            </div>
-            <!-- Conteggio dinamico: lo aggiorna render() -->
-            <p id="conteggio"></p>
-            <div id="lista"></div>
-        </section>
-
-    </main>
-
-    <!-- 5. FOOTER -->
-    <footer class="footer">
-        <div class="contenitore">
-            <p>AnimeBox · Progetto del venerdì · HTML, CSS e JavaScript · <a href="#top">Torna su ↑</a></p>
+        <div class="form-fondo">
+          <button type="submit" class="btn btn-primario">+ Aggiungi</button>
+          <p id="errore"></p>
         </div>
-    </footer>
+      </form>
+    </section>
 
-    <div id="notifica"></div>
+    <!-- 3. SEZIONE DI CONTROLLI -->
+    <section class="pannello">
+      <h2>Cerca e filtra</h2>
+      <div class="controlli">
+        <label>Ricerca
+          <input type="search" id="ricerca" placeholder="Titolo o protagonista...">
+        </label>
+        <label>Stato
+          <select id="filtro">
+            <option value="tutti">Tutte</option>
+            <option value="visti">Viste</option>
+            <option value="da-vedere">Da vedere</option>
+          </select>
+        </label>
+        <label>Categoria
+          <select id="filtro-categoria">
+            <option value="tutte">Tutte</option>
+            <option value="Robot">Robot</option>
+            <option value="Shojo">Shojo</option>
+            <option value="Azione">Azione</option>
+            <option value="Avventura">Avventura</option>
+            <option value="Sport">Sport</option>
+            <option value="Commedia">Commedia</option>
+          </select>
+        </label>
+        <label>Ordina per
+          <select id="ordine">
+            <option value="manuale">Ordine personale</option>
+            <option value="anno-asc">Anno (dal più vecchio)</option>
+            <option value="anno-desc">Anno (dal più recente)</option>
+            <option value="titolo">Titolo (A-Z)</option>
+            <option value="voto">Voto (dal più alto)</option>
+          </select>
+        </label>
+      </div>
+    </section>
 
-    <script src="assets/js/script.js"></script>
+    <!-- STATISTICHE -->
+    <section class="pannello">
+      <h2>Statistiche</h2>
+      <div id="statistiche"></div>
+    </section>
+
+    <!-- 4. LISTA DEI DATI (la riempie render) -->
+    <section class="pannello">
+      <div class="lista-testa">
+        <h2>La mia collezione</h2>
+        <div id="viste" class="gruppo-bottoni">
+          <button type="button" class="btn" data-vista="lista">☰ Lista</button>
+          <button type="button" class="btn attivo" data-vista="card">▦ Card</button>
+          <button type="button" class="btn" data-vista="tabella">▤ Tabella</button>
+        </div>
+      </div>
+      <!-- Conteggio dinamico: lo aggiorna render() -->
+      <p id="conteggio"></p>
+      <div id="lista"></div>
+    </section>
+
+  </main>
+
+  <!-- 5. FOOTER -->
+  <footer class="footer">
+    <div class="contenitore">
+      <p>AnimeBox · Progetto del venerdì · HTML, CSS e JavaScript · <a href="#top">Torna su ↑</a></p>
+    </div>
+  </footer>
+
+  <div id="notifica"></div>
+
+  <script src="assets/js/script.js"></script>
 </body>
-
 </html>
