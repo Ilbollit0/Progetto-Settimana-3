@@ -363,3 +363,129 @@ function renderStatistiche(viste) {
     statistiche.appendChild(creaBarra(`${ICONE[categoria]} ${categoria}`, quante, totale, ""));
   });
 }
+function render() {
+  const testo = ricerca.toLowerCase();
+  const risultati = anime.filter(serie => {
+    const okRicerca = serie.titolo.toLowerCase().includes(testo) ||
+                      serie.protagonista.toLowerCase().includes(testo);
+    const okFiltro = filtro === "tutti" ||
+                     (filtro === "visti" && serie.visto) ||
+                     (filtro === "da-vedere" && !serie.visto);
+    const okCategoria = filtroCategoria === "tutte" || serie.categoria === filtroCategoria;
+    return okRicerca && okFiltro && okCategoria;
+  });
+}
+
+  // 3. Ordino in memoria (filter ha già creato un array nuovo, lo stato non cambia)
+  if (ordine === "anno-asc") risultati.sort((a, b) => a.anno - b.anno);
+  if (ordine === "anno-desc") risultati.sort((a, b) => b.anno - a.anno);
+  if (ordine === "titolo") risultati.sort((a, b) => a.titolo.localeCompare(b.titolo));
+  if (ordine === "voto") risultati.sort((a, b) => b.voto - a.voto);
+
+  // 4. Svuoto il container
+  lista.innerHTML = "";
+  // Conteggio dinamico in cima alla lista
+  const viste = anime.filter(serie => serie.visto).length;
+  conteggio.textContent = `Mostrate: ${risultati.length} · Totale: ${anime.length} · Viste: ${viste} di ${anime.length}`;
+
+  if (risultati.length === 0) {
+    lista.appendChild(crea("p", "vuoto", "Nessuna serie trovata. Prova a cambiare ricerca o filtri."));
+  }
+
+  // 5. Raggruppo per categoria con reduce: { Robot: [...], Shojo: [...] }
+  const gruppi = risultati.reduce((accumulatore, serie) => {
+    if (!accumulatore[serie.categoria]) accumulatore[serie.categoria] = [];
+    accumulatore[serie.categoria].push(serie);
+    return accumulatore;
+  }, {});
+
+  // ...e ricreo un header <h3> + un elemento DOM per ogni serie
+  Object.keys(gruppi).forEach(categoria => {
+    lista.appendChild(crea("h3", "gruppo-titolo", `${ICONE[categoria]} ${categoria} (${gruppi[categoria].length})`));
+
+    const contenitore = creaContenitore();
+    let destinazione = contenitore;
+    if (vista === "tabella") destinazione = contenitore.querySelector("tbody");
+    gruppi[categoria].forEach(serie => destinazione.appendChild(creaElemento(serie)));
+
+    if (vista === "tabella") {
+      const wrapper = crea("div", "tabella-wrapper");
+      wrapper.appendChild(contenitore);
+      lista.appendChild(wrapper);
+    } else {
+      lista.appendChild(contenitore);
+    }
+  });
+// ----------------- FUNZIONI CHE MODIFICANO LO STATO -----------------
+
+// Scambia la serie con la vicina della stessa categoria (la lista è raggruppata)
+function sposta(id, direzione) {
+  const i = anime.findIndex(serie => serie.id === id);
+  let j = i + direzione;
+  while (j >= 0 && j < anime.length && anime[j].categoria !== anime[i].categoria) {
+    j += direzione;
+  }
+  if (j < 0 || j >= anime.length) return;
+
+  const temporanea = anime[i];
+  anime[i] = anime[j];
+  anime[j] = temporanea;
+}
+
+function confermaModifica(input) {
+  if (idInModifica === null) return; // già confermata (Invio seguito da blur)
+
+  const nuovoTitolo = input.value.trim();
+  const serie = anime.find(s => s.id === idInModifica);
+  idInModifica = null;
+
+  if (nuovoTitolo === "") {
+    notifica("Il titolo non può essere vuoto", "errore");
+  } else if (nuovoTitolo !== serie.titolo) {
+    serie.titolo = nuovoTitolo;
+    notifica("Titolo aggiornato", "successo");
+  }
+  render();
+}
+
+
+// ----------------- EVENTI -----------------
+
+// Form: validazione e aggiunta
+form.addEventListener("submit", event => {
+  event.preventDefault();
+
+  const titolo = inputTitolo.value.trim();
+  const protagonista = inputProtagonista.value.trim();
+  const annoTesto = inputAnno.value.trim();
+  const categoria = selectCategoria.value;
+  const votoTesto = selectVoto.value;
+  const annoMassimo = new Date().getFullYear();
+
+  const anno = Number(annoTesto);
+
+  // Controlli in fila: il primo che fallisce decide il messaggio
+  let errore = "";
+  if (titolo === "" || protagonista === "" || annoTesto === "" || categoria === "" || votoTesto === "") {
+    errore = "Compila tutti i campi obbligatori (*).";
+  } else if (isNaN(anno) || anno < 1960 || anno > annoMassimo) {
+    errore = `L'anno deve essere un numero tra 1960 e ${annoMassimo}.`;
+  } else if (anime.some(serie => serie.titolo.toLowerCase() === titolo.toLowerCase())) {
+    errore = "Questa serie è già nella collezione.";
+  }
+  erroreForm.textContent = errore;
+  if (errore !== "") return;
+
+  anime.push({
+    id: Date.now(),
+    titolo,
+    protagonista,
+    anno,
+    categoria,
+    voto: Number(votoTesto),
+    visto: checkVisto.checked
+  });
+  form.reset();
+  render();
+  notifica(`"${titolo}" aggiunta alla collezione`, "successo");
+});
