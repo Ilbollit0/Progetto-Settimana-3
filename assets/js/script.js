@@ -1,6 +1,15 @@
+// =====================================================
+//  AnimeBox - script.js
+//  Pattern fondamentale:  STATO  ->  render()  ->  EVENTI
+//  Gli eventi modificano SOLO lo stato e poi chiamano render().
+// =====================================================
+
+// ----------------- COSTANTI -----------------
+
 const CHIAVE_SERIE = "animebox-serie";
 const CHIAVE_TEMA = "animebox-tema";
 
+// Un'icona per ogni categoria (card, titoli dei gruppi, statistiche)
 const ICONE = {
   Robot: "🤖",
   Shojo: "🌸",
@@ -10,6 +19,7 @@ const ICONE = {
   Commedia: "😄",
 };
 
+// Serie di partenza: usate solo la prima volta, quando il localStorage è vuoto
 const DATI_INIZIALI = [
   {
     id: 1,
@@ -139,15 +149,26 @@ const DATI_INIZIALI = [
   },
 ];
 
-let anime = JSON.parse(localStorage.getItem(CHIAVE_SERIE)) || DATI_INIZIALI;
+// ----------------- STATO (poche variabili globali) -----------------
+
+// Se ci sono dati salvati li uso, altrimenti parto da quelli di esempio
+let anime = DATI_INIZIALI;
+if (localStorage.getItem(CHIAVE_SERIE) !== null) {
+  anime = JSON.parse(localStorage.getItem(CHIAVE_SERIE));
+}
 let ricerca = "";
 let filtro = "tutti"; // "tutti" | "visti" | "da-vedere"
 let filtroCategoria = "tutte"; // "tutte" | una categoria
 let ordine = "manuale"; // "manuale" | "anno-asc" | "anno-desc" | "titolo" | "voto"
 let vista = "card"; // "lista" | "card" | "tabella"
-let tema = localStorage.getItem(CHIAVE_TEMA) || "chiaro";
+let tema = "chiaro"; // "chiaro" | "scuro"
+if (localStorage.getItem(CHIAVE_TEMA) !== null) {
+  tema = localStorage.getItem(CHIAVE_TEMA);
+}
 let idInModifica = null; // id della serie di cui si sta modificando il titolo
 let timerNotifica = null;
+
+// ----------------- ELEMENTI DEL DOM -----------------
 
 const form = document.getElementById("form-serie");
 const inputTitolo = document.getElementById("titolo");
@@ -170,6 +191,9 @@ const conteggio = document.getElementById("conteggio");
 const lista = document.getElementById("lista");
 const notificaBox = document.getElementById("notifica");
 
+// ----------------- FUNZIONI DI SUPPORTO -----------------
+
+// Crea un elemento con classe e testo (textContent: sicuro anche con testo scritto dall'utente)
 function crea(tag, classe, testo) {
   const elemento = document.createElement(tag);
   if (classe) elemento.className = classe;
@@ -177,6 +201,7 @@ function crea(tag, classe, testo) {
   return elemento;
 }
 
+// Stelline del voto costruite con un ciclo for: ★★★☆☆
 function stelle(voto) {
   let risultato = "";
   for (let i = 1; i <= 5; i++) {
@@ -188,11 +213,13 @@ function stelle(voto) {
   }
   return risultato;
 }
+
 function salva() {
   localStorage.setItem(CHIAVE_SERIE, JSON.stringify(anime));
   localStorage.setItem(CHIAVE_TEMA, tema);
 }
 
+// verde per successo, rosso per errore
 function notifica(testo, tipo) {
   notificaBox.textContent = testo;
   notificaBox.className = tipo;
@@ -210,4 +237,129 @@ function creaBottone(testo, azione, id, suggerimento) {
   bottone.dataset.azione = azione;
   bottone.dataset.id = id;
   return bottone;
+}
+
+function creaTitolo(serie) {
+  if (serie.id === idInModifica) {
+    const input = crea("input", "input-modifica");
+    input.value = serie.titolo;
+    return input;
+  }
+  return crea("strong", "titolo", serie.titolo);
+}
+function creaAzioni(serie) {
+  const azioni = crea("div", "azioni");
+
+  const btnVisto = creaBottone("👁 Da vedere", "visto", serie.id, "Segna come vista / da vedere");
+  btnVisto.classList.add("btn-visto");
+  if (serie.visto) {
+    btnVisto.textContent = "✔ Vista";
+    btnVisto.classList.add("attivo");
+  }
+  azioni.appendChild(btnVisto);
+
+  // Le frecce hanno senso solo con l'ordine personale
+  if (ordine === "manuale") {
+    azioni.appendChild(creaBottone("↑", "su", serie.id, "Sposta su"));
+    azioni.appendChild(creaBottone("↓", "giu", serie.id, "Sposta giù"));
+  }
+  azioni.appendChild(creaBottone("✏️", "modifica", serie.id, "Modifica titolo"));
+  azioni.appendChild(creaBottone("🗑️", "elimina", serie.id, "Elimina"));
+  return azioni;
+}
+// Un elemento per ogni serie, diverso in base alla vista corrente
+function creaElemento(serie) {
+  const dettagli = `${serie.protagonista} · ${serie.anno}`;
+  let elemento
+
+  if (vista === "lista") {
+    elemento = crea("li", "riga");
+    const info = crea("div", "info");
+    info.appendChild(creaTitolo(serie));
+    info.appendChild(crea("span", "dettagli", dettagli));
+    elemento.appendChild(info);
+    elemento.appendChild(crea("span", "stelle", stelle(serie.voto)));
+    elemento.appendChild(creaAzioni(serie));
+  } else if (vista === "tabella") {
+    elemento = crea("tr");
+    const tdTitolo = crea("td");
+    const tdAzioni = crea("td");
+    tdTitolo.appendChild(creaTitolo(serie));
+    tdAzioni.appendChild(creaAzioni(serie));
+    elemento.appendChild(tdTitolo);
+    elemento.appendChild(crea("td", "", serie.protagonista));
+    elemento.appendChild(crea("td", "", serie.anno));
+    elemento.appendChild(crea("td", "stelle", stelle(serie.voto)));
+    elemento.appendChild(tdAzioni);
+  } else {
+    elemento = crea("article", "card");
+    elemento.appendChild(crea("div", "card-icona", ICONE[serie.categoria]));
+    elemento.appendChild(creaTitolo(serie));
+    elemento.appendChild(crea("p", "dettagli", dettagli));
+    elemento.appendChild(crea("p", "stelle", stelle(serie.voto)));
+    elemento.appendChild(creaAzioni(serie));
+  }
+  if (serie.visto) elemento.classList.add("guardata");
+  return elemento;
+}
+function creaContenitore() {
+  if (vista === "lista") return crea("ul", "vista-lista");
+  if (vista === "card") return crea("div", "griglia");
+
+  const tabella = crea("table", "tabella");
+  const intestazione = crea("tr");
+  ["Titolo", "Protagonista", "Anno", "Voto", "Azioni"].forEach(testo => {
+    intestazione.appendChild(crea("th", "", testo));
+  });
+  const thead = crea("thead");
+  thead.appendChild(intestazione);
+  tabella.appendChild(thead);
+  tabella.appendChild(crea("tbody"));
+  return tabella;
+}
+
+function creaContatore(numero, etichetta) {
+  const contatore = crea("div", "contatore");
+  contatore.appendChild(crea("span", "contatore-numero", numero));
+  contatore.appendChild(crea("span", "contatore-etichetta", etichetta));
+  return contatore;
+}
+
+function creaBarra(etichetta, valore, totale, classe) {
+  const riga = crea("div", "barra-riga");
+  const barra = crea("div", "barra");
+  const piena = crea("div", "barra-piena " + classe);
+  let percentuale = 0;
+  if (totale > 0) percentuale = (valore / totale) * 100;
+  piena.style.width = percentuale + "%";
+  barra.appendChild(piena);
+  riga.appendChild(crea("span", "", etichetta));
+  riga.appendChild(barra);
+  riga.appendChild(crea("span", "barra-valore", valore));
+  return riga;
+}
+function renderStatistiche(viste) {
+  const totale = anime.length;
+  let percentuale = 0;
+  let media = 0;
+  if (totale > 0) {
+    percentuale = Math.round((viste / totale) * 100);
+    media = anime.reduce((somma, serie) => somma + serie.voto, 0) / totale;
+  }
+   statistiche.innerHTML = "";
+
+  const contatori = crea("div", "contatori");
+  contatori.appendChild(creaContatore(totale, "Serie in collezione"));
+  contatori.appendChild(creaContatore(`${viste} (${percentuale}%)`, "Serie viste"));
+  contatori.appendChild(creaContatore(media.toFixed(1) + " ★", "Voto medio"));
+  statistiche.appendChild(contatori);
+
+  statistiche.appendChild(creaBarra("✔ Viste", viste, totale, "verde"));
+  statistiche.appendChild(creaBarra("👁 Da vedere", totale - viste, totale, ""));
+
+  statistiche.appendChild(crea("h4", "stat-titolo", "Per categoria"));
+  Object.keys(ICONE).forEach(categoria => {
+    const quante = anime.filter(serie => serie.categoria === categoria).length;
+    statistiche.appendChild(creaBarra(`${ICONE[categoria]} ${categoria}`, quante, totale, ""));
+  });
 }
