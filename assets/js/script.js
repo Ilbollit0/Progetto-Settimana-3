@@ -4,6 +4,7 @@
 //  Gli eventi modificano SOLO lo stato e poi chiamano render().
 // =====================================================
 
+
 // ----------------- COSTANTI -----------------
 
 const CHIAVE_SERIE = "animebox-serie";
@@ -16,157 +17,47 @@ const ICONE = {
   Azione: "⚔️",
   Avventura: "🗺️",
   Sport: "🏐",
-  Commedia: "😄",
+  Commedia: "😄"
 };
 
 // Serie di partenza: usate solo la prima volta, quando il localStorage è vuoto
 const DATI_INIZIALI = [
-  {
-    id: 1,
-    titolo: "Mazinga Z",
-    protagonista: "Koji Kabuto",
-    anno: 1972,
-    categoria: "Robot",
-    voto: 5,
-    visto: true,
-  },
-  {
-    id: 2,
-    titolo: "Il Grande Mazinga",
-    protagonista: "Tetsuya Tsurugi",
-    anno: 1974,
-    categoria: "Robot",
-    voto: 4,
-    visto: false,
-  },
-  {
-    id: 3,
-    titolo: "UFO Robot Goldrake",
-    protagonista: "Actarus",
-    anno: 1975,
-    categoria: "Robot",
-    voto: 5,
-    visto: true,
-  },
-  {
-    id: 4,
-    titolo: "Jeeg Robot d'acciaio",
-    protagonista: "Hiroshi Shiba",
-    anno: 1975,
-    categoria: "Robot",
-    voto: 4,
-    visto: false,
-  },
-  {
-    id: 5,
-    titolo: "Lupin III",
-    protagonista: "Arsenio Lupin III",
-    anno: 1971,
-    categoria: "Avventura",
-    voto: 5,
-    visto: true,
-  },
-  {
-    id: 6,
-    titolo: "Occhi di gatto",
-    protagonista: "Sheila",
-    anno: 1983,
-    categoria: "Avventura",
-    voto: 4,
-    visto: false,
-  },
-  {
-    id: 7,
-    titolo: "Lady Oscar",
-    protagonista: "Oscar François de Jarjayes",
-    anno: 1979,
-    categoria: "Shojo",
-    voto: 5,
-    visto: true,
-  },
-  {
-    id: 8,
-    titolo: "Candy Candy",
-    protagonista: "Candy White",
-    anno: 1976,
-    categoria: "Shojo",
-    voto: 3,
-    visto: false,
-  },
-  {
-    id: 9,
-    titolo: "Sailor Moon",
-    protagonista: "Bunny Tsukino",
-    anno: 1992,
-    categoria: "Shojo",
-    voto: 4,
-    visto: true,
-  },
-  {
-    id: 10,
-    titolo: "Mila e Shiro - Due cuori nella pallavolo",
-    protagonista: "Mila Hazuki",
-    anno: 1984,
-    categoria: "Sport",
-    voto: 4,
-    visto: false,
-  },
-  {
-    id: 11,
-    titolo: "Holly e Benji",
-    protagonista: "Holly Hutton",
-    anno: 1983,
-    categoria: "Sport",
-    voto: 4,
-    visto: true,
-  },
-  {
-    id: 12,
-    titolo: "I Cavalieri dello Zodiaco",
-    protagonista: "Pegasus",
-    anno: 1986,
-    categoria: "Azione",
-    voto: 5,
-    visto: false,
-  },
-  {
-    id: 13,
-    titolo: "Ken il guerriero",
-    protagonista: "Kenshiro",
-    anno: 1984,
-    categoria: "Azione",
-    voto: 4,
-    visto: false,
-  },
-  {
-    id: 14,
-    titolo: "Superchicche",
-    protagonista: "Lolly, Dolly e Molly",
-    anno: 1998,
-    categoria: "Commedia",
-    voto: 3,
-    visto: false,
-  },
+  { id: 1, titolo: "Mazinga Z", protagonista: "Koji Kabuto", anno: 1972, categoria: "Robot", voto: 5, visto: true },
+  { id: 2, titolo: "Il Grande Mazinga", protagonista: "Tetsuya Tsurugi", anno: 1974, categoria: "Robot", voto: 4, visto: false },
+  { id: 3, titolo: "UFO Robot Goldrake", protagonista: "Actarus", anno: 1975, categoria: "Robot", voto: 5, visto: true },
+  { id: 4, titolo: "Jeeg Robot d'acciaio", protagonista: "Hiroshi Shiba", anno: 1975, categoria: "Robot", voto: 4, visto: false },
+  { id: 5, titolo: "Lupin III", protagonista: "Arsenio Lupin III", anno: 1971, categoria: "Avventura", voto: 5, visto: true },
+  { id: 6, titolo: "Occhi di gatto", protagonista: "Sheila", anno: 1983, categoria: "Avventura", voto: 4, visto: false },
+  { id: 7, titolo: "Lady Oscar", protagonista: "Oscar François de Jarjayes", anno: 1979, categoria: "Shojo", voto: 5, visto: true },
+  { id: 8, titolo: "Candy Candy", protagonista: "Candy White", anno: 1976, categoria: "Shojo", voto: 3, visto: false },
+  { id: 9, titolo: "Sailor Moon", protagonista: "Bunny Tsukino", anno: 1992, categoria: "Shojo", voto: 4, visto: true },
+  { id: 10, titolo: "Mila e Shiro - Due cuori nella pallavolo", protagonista: "Mila Hazuki", anno: 1984, categoria: "Sport", voto: 4, visto: false },
+  { id: 11, titolo: "Holly e Benji", protagonista: "Holly Hutton", anno: 1983, categoria: "Sport", voto: 4, visto: true },
+  { id: 12, titolo: "I Cavalieri dello Zodiaco", protagonista: "Pegasus", anno: 1986, categoria: "Azione", voto: 5, visto: false },
+  { id: 13, titolo: "Ken il guerriero", protagonista: "Kenshiro", anno: 1984, categoria: "Azione", voto: 4, visto: false },
+  { id: 14, titolo: "Superchicche", protagonista: "Lolly, Dolly e Molly", anno: 1998, categoria: "Commedia", voto: 3, visto: false }
 ];
+
 
 // ----------------- STATO (poche variabili globali) -----------------
 
-// Se ci sono dati salvati li uso, altrimenti parto da quelli di esempio
+
 let anime = DATI_INIZIALI;
 if (localStorage.getItem(CHIAVE_SERIE) !== null) {
   anime = JSON.parse(localStorage.getItem(CHIAVE_SERIE));
 }
 let ricerca = "";
-let filtro = "tutti"; // "tutti" | "visti" | "da-vedere"
-let filtroCategoria = "tutte"; // "tutte" | una categoria
-let ordine = "manuale"; // "manuale" | "anno-asc" | "anno-desc" | "titolo" | "voto"
-let vista = "card"; // "lista" | "card" | "tabella"
-let tema = "chiaro"; // "chiaro" | "scuro"
+let filtro = "tutti";            // "tutti" | "visti" | "da-vedere"
+let filtroCategoria = "tutte";   // "tutte" | una categoria
+let ordine = "manuale";          // "manuale" | "anno-asc" | "anno-desc" | "titolo" | "voto"
+let vista = "card";              // "lista" | "card" | "tabella"
+let tema = "chiaro";             // "chiaro" | "scuro"
 if (localStorage.getItem(CHIAVE_TEMA) !== null) {
   tema = localStorage.getItem(CHIAVE_TEMA);
 }
-let idInModifica = null; // id della serie di cui si sta modificando il titolo
+let idInModifica = null;         // id della serie di cui si sta modificando il titolo
 let timerNotifica = null;
+
 
 // ----------------- ELEMENTI DEL DOM -----------------
 
@@ -190,6 +81,7 @@ const statistiche = document.getElementById("statistiche");
 const conteggio = document.getElementById("conteggio");
 const lista = document.getElementById("lista");
 const notificaBox = document.getElementById("notifica");
+
 
 // ----------------- FUNZIONI DI SUPPORTO -----------------
 
@@ -219,7 +111,7 @@ function salva() {
   localStorage.setItem(CHIAVE_TEMA, tema);
 }
 
-// verde per successo, rosso per errore
+// Messaggio temporaneo: verde per successo, rosso per errore
 function notifica(testo, tipo) {
   notificaBox.textContent = testo;
   notificaBox.className = tipo;
@@ -239,6 +131,7 @@ function creaBottone(testo, azione, id, suggerimento) {
   return bottone;
 }
 
+// Il titolo è un testo, oppure un <input> se la serie è in modifica
 function creaTitolo(serie) {
   if (serie.id === idInModifica) {
     const input = crea("input", "input-modifica");
@@ -247,6 +140,7 @@ function creaTitolo(serie) {
   }
   return crea("strong", "titolo", serie.titolo);
 }
+
 function creaAzioni(serie) {
   const azioni = crea("div", "azioni");
 
@@ -267,10 +161,11 @@ function creaAzioni(serie) {
   azioni.appendChild(creaBottone("🗑️", "elimina", serie.id, "Elimina"));
   return azioni;
 }
+
 // Un elemento per ogni serie, diverso in base alla vista corrente
 function creaElemento(serie) {
   const dettagli = `${serie.protagonista} · ${serie.anno}`;
-  let elemento
+  let elemento;
 
   if (vista === "lista") {
     elemento = crea("li", "riga");
@@ -292,6 +187,7 @@ function creaElemento(serie) {
     elemento.appendChild(crea("td", "stelle", stelle(serie.voto)));
     elemento.appendChild(tdAzioni);
   } else {
+    // vista "card"
     elemento = crea("article", "card");
     elemento.appendChild(crea("div", "card-icona", ICONE[serie.categoria]));
     elemento.appendChild(creaTitolo(serie));
@@ -299,9 +195,13 @@ function creaElemento(serie) {
     elemento.appendChild(crea("p", "stelle", stelle(serie.voto)));
     elemento.appendChild(creaAzioni(serie));
   }
+
+  // Bordo verde per le serie già viste: uguale in tutte e tre le viste
   if (serie.visto) elemento.classList.add("guardata");
   return elemento;
 }
+
+// Contenitore di un gruppo: <ul>, griglia di card o tabella
 function creaContenitore() {
   if (vista === "lista") return crea("ul", "vista-lista");
   if (vista === "card") return crea("div", "griglia");
@@ -338,6 +238,9 @@ function creaBarra(etichetta, valore, totale, classe) {
   riga.appendChild(crea("span", "barra-valore", valore));
   return riga;
 }
+
+// Le statistiche dipendono dallo stato, quindi le ricalcola render()
+// (riceve il numero di serie viste, già calcolato da render() per il conteggio)
 function renderStatistiche(viste) {
   const totale = anime.length;
   let percentuale = 0;
@@ -346,7 +249,8 @@ function renderStatistiche(viste) {
     percentuale = Math.round((viste / totale) * 100);
     media = anime.reduce((somma, serie) => somma + serie.voto, 0) / totale;
   }
-   statistiche.innerHTML = "";
+
+  statistiche.innerHTML = "";
 
   const contatori = crea("div", "contatori");
   contatori.appendChild(creaContatore(totale, "Serie in collezione"));
@@ -363,7 +267,13 @@ function renderStatistiche(viste) {
     statistiche.appendChild(creaBarra(`${ICONE[categoria]} ${categoria}`, quante, totale, ""));
   });
 }
+
+
+// ----------------- RENDER -----------------
+
 function render() {
+  // 1. Parto dall'array completo (lo stato)
+  // 2. Filtro in memoria: ricerca + stato visto + categoria
   const testo = ricerca.toLowerCase();
   const risultati = anime.filter(serie => {
     const okRicerca = serie.titolo.toLowerCase().includes(testo) ||
@@ -374,7 +284,6 @@ function render() {
     const okCategoria = filtroCategoria === "tutte" || serie.categoria === filtroCategoria;
     return okRicerca && okFiltro && okCategoria;
   });
-}
 
   // 3. Ordino in memoria (filter ha già creato un array nuovo, lo stato non cambia)
   if (ordine === "anno-asc") risultati.sort((a, b) => a.anno - b.anno);
@@ -416,9 +325,30 @@ function render() {
       lista.appendChild(contenitore);
     }
   });
+
+  // Parti della pagina che dipendono dallo stato
+  renderStatistiche(viste);
+  bottoniVista.querySelectorAll("button").forEach(bottone => {
+    bottone.classList.remove("attivo");
+    if (bottone.dataset.vista === vista) bottone.classList.add("attivo");
+  });
+  if (tema === "scuro") {
+    document.body.classList.add("dark");
+    btnTema.textContent = "☀️ Tema chiaro";
+  } else {
+    document.body.classList.remove("dark");
+    btnTema.textContent = "🌙 Tema scuro";
+  }
+
+  const inputModifica = lista.querySelector(".input-modifica");
+  if (inputModifica) inputModifica.focus();
+
+  salva();
+}
+
+
 // ----------------- FUNZIONI CHE MODIFICANO LO STATO -----------------
 
-// Scambia la serie con la vicina della stessa categoria (la lista è raggruppata)
 function sposta(id, direzione) {
   const i = anime.findIndex(serie => serie.id === id);
   let j = i + direzione;
@@ -433,7 +363,7 @@ function sposta(id, direzione) {
 }
 
 function confermaModifica(input) {
-  if (idInModifica === null) return; // già confermata (Invio seguito da blur)
+  if (idInModifica === null) return; //(Invio seguito da blur)
 
   const nuovoTitolo = input.value.trim();
   const serie = anime.find(s => s.id === idInModifica);
@@ -473,6 +403,7 @@ form.addEventListener("submit", event => {
   } else if (anime.some(serie => serie.titolo.toLowerCase() === titolo.toLowerCase())) {
     errore = "Questa serie è già nella collezione.";
   }
+
   erroreForm.textContent = errore;
   if (errore !== "") return;
 
@@ -489,3 +420,86 @@ form.addEventListener("submit", event => {
   render();
   notifica(`"${titolo}" aggiunta alla collezione`, "successo");
 });
+
+// Event delegation: un solo listener per tutti i bottoni della lista
+lista.addEventListener("click", event => {
+  const azione = event.target.dataset.azione;
+  if (!azione) return;
+
+  const id = Number(event.target.dataset.id);
+  const serie = anime.find(s => s.id === id);
+
+  if (azione === "elimina") {
+    anime = anime.filter(s => s.id !== id);
+    notifica(`"${serie.titolo}" eliminata`, "errore");
+  } else if (azione === "visto") {
+    serie.visto = !serie.visto;
+    if (serie.visto) {
+      notifica(`"${serie.titolo}" segnata come vista`, "successo");
+    } else {
+      notifica(`"${serie.titolo}" da vedere`, "successo");
+    }
+  } else if (azione === "modifica") {
+    idInModifica = id;
+  } else if (azione === "su") {
+    sposta(id, -1);
+  } else if (azione === "giu") {
+    sposta(id, 1);
+  }
+  render();
+});
+
+// Modifica in-place: conferma con Invio, annulla con Esc, conferma anche uscendo dal campo
+lista.addEventListener("keydown", event => {
+  if (!event.target.classList.contains("input-modifica")) return;
+  if (event.key === "Enter") {
+    confermaModifica(event.target);
+  } else if (event.key === "Escape") {
+    idInModifica = null;
+    render();
+  }
+});
+
+lista.addEventListener("focusout", event => {
+  if (event.target.classList.contains("input-modifica")) confermaModifica(event.target);
+});
+
+// Controlli: salvano la scelta nello stato e ridisegnano
+inputRicerca.addEventListener("input", () => {
+  ricerca = inputRicerca.value.trim();
+  render();
+});
+
+selectFiltro.addEventListener("change", () => {
+  filtro = selectFiltro.value;
+  render();
+});
+
+selectFiltroCategoria.addEventListener("change", () => {
+  filtroCategoria = selectFiltroCategoria.value;
+  render();
+});
+
+selectOrdine.addEventListener("change", () => {
+  ordine = selectOrdine.value;
+  render();
+});
+
+bottoniVista.addEventListener("click", event => {
+  if (!event.target.dataset.vista) return;
+  vista = event.target.dataset.vista;
+  render();
+});
+
+btnTema.addEventListener("click", () => {
+  if (tema === "chiaro") {
+    tema = "scuro";
+  } else {
+    tema = "chiaro";
+  }
+  render();
+});
+
+
+// Primo disegno della pagina
+render();
